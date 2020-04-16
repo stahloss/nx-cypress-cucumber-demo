@@ -11,7 +11,35 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-const { preprocessTypescript } = require('@nrwl/cypress/plugins/preprocessor');
+// const { preprocessTypescript } = require('@nrwl/cypress/plugins/preprocessor');
+const wp = require('@cypress/webpack-preprocessor');
+const {getWebpackConfig} = require('@nrwl/cypress/plugins/preprocessor');
+
+// https://github.com/nrwl/nx/issues/1276
+function preprocessTypescript(config) {
+  if (!config.env.tsConfig) {
+      throw new Error('Please provide an absolute path to a tsconfig.json as cypressConfig.env.tsConfig');
+  }
+
+  const webpackConfig = getWebpackConfig(config);
+
+  webpackConfig.node = {fs: 'empty', child_process: 'empty', readline: 'empty'};
+  webpackConfig.module.rules.push({
+      test: /\.feature$/,
+      use: [{
+          loader: 'cypress-cucumber-preprocessor/loader',
+      }],
+  }, {
+      test: /\.features$/,
+      use: [{
+          loader: 'cypress-cucumber-preprocessor/lib/featuresLoader',
+      }],
+  });
+
+  return async (...args) => wp({
+      webpackOptions: webpackConfig,
+  })(...args);
+}
 
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
