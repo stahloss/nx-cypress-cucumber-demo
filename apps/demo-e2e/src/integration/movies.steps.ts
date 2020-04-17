@@ -19,16 +19,9 @@ Then(/^these movies are shown:$/, dataTable => {
   cy.wait('@getMovies');
   cy.get('table tbody tr')
     .should('have.length.of', dataTableRaw.length - 1)
-    .as('cyRows');
-  for (let row = 1; row < dataTableRaw.length; row++) {
-    cy.get('@cyRows')
-      .eq(row - 1)
-      .find('td')
-      .as('cyRowColumns');
-    for (let column = 0; column < dataTableRaw[row].length; column++) {
-      cy.get('@cyRowColumns')
-        .eq(column)
-        .should('contain', dataTableRaw[row][column]);
-    }
-  }
+    .each((row, rowIndex) => {
+      cy.wrap(row).find('td').each((col, colIndex) => {
+          cy.wrap(col).should('contain', dataTableRaw[rowIndex + 1][colIndex]);
+      })
+    });
 });
