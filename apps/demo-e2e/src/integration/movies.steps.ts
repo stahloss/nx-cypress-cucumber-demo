@@ -17,18 +17,25 @@ Then('the title is shown', () => {
 Then(/^these movies are shown:$/, dataTable => {
   const dataTableRaw = dataTable.raw();
   cy.wait('@getMovies');
-  cy.get('table tbody tr')
-    .should('have.length.of', dataTableRaw.length - 1)
-    .as('cyRows');
-  for (let row = 1; row < dataTableRaw.length; row++) {
-    cy.get('@cyRows')
-      .eq(row - 1)
-      .find('td')
-      .as('cyRowColumns');
-    for (let column = 0; column < dataTableRaw[row].length; column++) {
-      cy.get('@cyRowColumns')
-        .eq(column)
-        .should('contain', dataTableRaw[row][column]);
-    }
-  }
+  // cy.get('table tbody tr')
+  //   .should('have.length.of', dataTableRaw.length - 1)
+  //   .as('cyRows');
+  // for (let row = 1; row < dataTableRaw.length; row++) {
+  //   cy.get('@cyRows')
+  //     .eq(row - 1)
+  //     .find('td')
+  //     .as('cyRowColumns');
+  //   for (let column = 0; column < dataTableRaw[row].length; column++) {
+  //     cy.get('@cyRowColumns')
+  //       .eq(column)
+  //       .should('contain', dataTableRaw[row][column]);
+  //   }
+  // }
+  cy.get('table tbody tr').should(($rows) => {
+    $rows.each((k, $row) => {
+      const cells = Cypress._.map($row.children, 'innerText');
+      expect(cells).to.deep.equal(dataTableRaw[k + 1]);
+    });
+  });
+
 });
