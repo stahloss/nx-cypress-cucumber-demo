@@ -21,8 +21,13 @@
             "polyfills": "apps/demo/src/polyfills.ts",
             "tsConfig": "apps/demo/tsconfig.app.json",
             "aot": true,
-            "assets": ["apps/demo/src/favicon.ico", "apps/demo/src/assets"],
-            "styles": ["apps/demo/src/styles.scss"],
+            "assets": [
+              "apps/demo/src/favicon.ico",
+              "apps/demo/src/assets"
+            ],
+            "styles": [
+              "apps/demo/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -36,7 +41,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -54,7 +58,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -80,17 +87,21 @@
               "apps/demo/tsconfig.app.json",
               "apps/demo/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/demo/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/demo/**/*"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/demo/jest.config.js",
-            "tsConfig": "apps/demo/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "apps/demo/src/test-setup.ts"
-          }
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/apps/demo"
+          ]
         }
       }
     },
@@ -115,8 +126,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/demo-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/demo-e2e/**"]
+            "tsConfig": [
+              "apps/demo-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/demo-e2e/**/*"
+            ]
           }
         }
       }
