@@ -12,6 +12,7 @@
 // the project's config changing)
 
 // const { preprocessTypescript } = require('@nrwl/cypress/plugins/preprocessor');
+// const cucumber = require('cypress-cucumber-preprocessor').default
 const wp = require('@cypress/webpack-preprocessor');
 const {getWebpackConfig} = require('@nrwl/cypress/plugins/preprocessor');
 
@@ -46,5 +47,7 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
 
   // Preprocess Typescript file using Nx helper
-  on('file:preprocessor', preprocessTypescript(config));
+  // on('file:preprocessor', preprocessTypescript(config));
+  // on('file:preprocessor', cucumber());
+  return config;
 };

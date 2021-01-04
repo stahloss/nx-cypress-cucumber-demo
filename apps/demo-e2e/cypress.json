@@ -9,5 +9,5 @@
   "videosFolder": "../../dist/cypress/apps/demo-e2e/videos",
   "screenshotsFolder": "../../dist/cypress/apps/demo-e2e/screenshots",
   "chromeWebSecurity": false,
-  "testFiles": "**/*.feature"
+  "testFiles": "**/*.spec.ts"
 }
